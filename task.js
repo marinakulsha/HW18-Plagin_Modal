@@ -156,7 +156,6 @@
             model.sendtoLocalStorage();
         };
         var btncloseModal = document.querySelectorAll(' .modal__close'); //коллекция кнопок закрыть
-        console.log(btncloseModal)
         Array.from(btncloseModal).forEach(btn => btn.addEventListener('click', this.handlerControllerClose));
         var links = document.querySelector('.link-wrapper-container').querySelectorAll('a'); //коллекция links
         Array.from(links).forEach(link => link.addEventListener('click', this.handlerControllerOpen)); //переводим к массиву 
@@ -164,9 +163,9 @@
     };
 
     window.init = function() {
-        var view = new View(createModal);
-        var model = new Model(view);
-        var controller = new Controller(model);
+        window.view = new View(createModal);
+        window.model = new Model(view);
+        window.controller = new Controller(model);
     }
 
     window.createModal = function(id, title, message) {
@@ -188,7 +187,7 @@
         exit.classList.add('modal__close');
         exit.classList.add('close-add');
         exit.textContent = "Закрыть";
-        exit.addEventListener('click', Controller.handlerControllerClose);
+        exit.addEventListener('click', controller.handlerControllerClose);
         header.appendChild(exit);
 
         var h3 = document.createElement('h3');
@@ -262,7 +261,7 @@
         btnCancel.classList.add('modal__cancel');
         btnCancel.setAttribute("title", "Отмена");
         btnCancel.textContent = 'Отмена';
-        btnCancel.addEventListener('click', Controller.handlerControllerClose);
+        btnCancel.addEventListener('click', controller.handlerControllerClose);
         footer.appendChild(btnCancel);
 
         var btnSave = document.createElement('button');
@@ -274,7 +273,7 @@
             var inputBirthDayValue = inputBirthDay.value;
             var inputBirthMonthValue = inputBirthMonth.value;
             var inputBirthYearValue = inputBirthYear.value;
-            Controller.handlerControllerSave(inputNameValue, inputBirthDayValue, inputBirthMonthValue, inputBirthYearValue);
+            controller.handlerControllerSave(inputNameValue, inputBirthDayValue, inputBirthMonthValue, inputBirthYearValue);
         });
 
         footer.appendChild(btnSave);
