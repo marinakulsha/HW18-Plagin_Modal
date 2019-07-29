@@ -1,7 +1,7 @@
 (function() {
 
     // model
-    function Model(view) {
+    window.Model = function(view) {
 
         var outputValue = null;
 
@@ -44,7 +44,7 @@
 
 
     // view
-    function View(func) {
+    window.View = function(func) {
         var wrapper = null;
         this.renderFunction = func;
 
@@ -98,7 +98,7 @@
 
 
     // controller
-    function Controller(model) {
+    window.Controller = function(model) {
         var modal;
 
         var modal_overlay = document.querySelector(' .modal-overlay');
@@ -155,20 +155,21 @@
             };
             model.sendtoLocalStorage();
         };
-
         var btncloseModal = document.querySelectorAll(' .modal__close'); //коллекция кнопок закрыть
+        console.log(btncloseModal)
         Array.from(btncloseModal).forEach(btn => btn.addEventListener('click', this.handlerControllerClose));
-        var links = document.querySelector('.link-wrapper-container').getElementsByTagName('a'); //коллекция links
-        Array.from(links).forEach(link => link.addEventListener('click', this.handlerControllerOpen)); //переводим к массиву и для каждого link вешаем событие click
+        var links = document.querySelector('.link-wrapper-container').querySelectorAll('a'); //коллекция links
+        Array.from(links).forEach(link => link.addEventListener('click', this.handlerControllerOpen)); //переводим к массиву 
+
     };
 
-    function start() {
+    window.init = function() {
         var view = new View(createModal);
         var model = new Model(view);
         var controller = new Controller(model);
     }
 
-    function createModal(id, title, message) {
+    window.createModal = function(id, title, message) {
         var body = document.querySelector('body');
         var modal_overlay = document.createElement('div');
         modal_overlay.classList.add('modal_overlay');
@@ -187,7 +188,7 @@
         exit.classList.add('modal__close');
         exit.classList.add('close-add');
         exit.textContent = "Закрыть";
-        exit.addEventListener('click', controller.handlerControllerClose);
+        exit.addEventListener('click', Controller.handlerControllerClose);
         header.appendChild(exit);
 
         var h3 = document.createElement('h3');
@@ -261,7 +262,7 @@
         btnCancel.classList.add('modal__cancel');
         btnCancel.setAttribute("title", "Отмена");
         btnCancel.textContent = 'Отмена';
-        btnCancel.addEventListener('click', controller.handlerControllerClose);
+        btnCancel.addEventListener('click', Controller.handlerControllerClose);
         footer.appendChild(btnCancel);
 
         var btnSave = document.createElement('button');
@@ -273,11 +274,13 @@
             var inputBirthDayValue = inputBirthDay.value;
             var inputBirthMonthValue = inputBirthMonth.value;
             var inputBirthYearValue = inputBirthYear.value;
-            controller.handlerControllerSave(inputNameValue, inputBirthDayValue, inputBirthMonthValue, inputBirthYearValue);
+            Controller.handlerControllerSave(inputNameValue, inputBirthDayValue, inputBirthMonthValue, inputBirthYearValue);
         });
 
         footer.appendChild(btnSave);
         modal.appendChild(footer);
         body.appendChild(modal);
     };
+
+
 }())
